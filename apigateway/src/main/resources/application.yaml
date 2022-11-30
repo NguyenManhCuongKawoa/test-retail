@@ -1,0 +1,51 @@
+
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:oracle:thin:@192.168.1.243:1521:orcl
+    username: retailsystem
+    password: Aladin123
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.OracleDialect
+  main:
+    web-application-type: reactive
+  application:
+    name: GATEWAYSERVICE
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+          predicates:
+            - name: Path
+              args:
+                pattern: "'/services/'+serviceId.toLowerCase()+'/**'"
+          filters:
+            - name: RewritePath
+              args:
+                regexp: "'/services/' + serviceId.toLowerCase() + '/(?<remaining>.*)'"
+                replacement: "'/${remaining}'"
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+    instance:
+      hostname: localhost
+
+server:
+  port: 8000
+
+jwt:
+  secret: cmV0YWlsIHN5c3RlbSB0ZXN0aW5nIA==
+  expirationTime: 1000
