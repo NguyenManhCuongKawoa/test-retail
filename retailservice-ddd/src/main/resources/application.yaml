@@ -31,3 +31,8 @@ eureka:
 jwt:
   secret: cmV0YWlsIHN5c3RlbSB0ZXN0aW5nIA==
   expirationTime: 1000
+
+
+micro:
+  services:
+    customer: http://localhost:8000/services/customerservice
